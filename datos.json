@@ -1,0 +1,18 @@
+[{    
+    "matricula":"2021030662",
+    "nombre": "Kevin Alejandro Fuentes",
+    "sexo": "M",
+    "materias":["prog. web", "Base de datos", "ingles"]
+},
+{
+    "matricula":"2022030710",
+    "nombre": "Marco Vinicio Junior",
+    "sexo": "M",
+    "materias":["prog. web", "Base de datos", "ingles"]
+},
+{
+    "matricula":"2020826373",
+    "nombre": "Enrique Sandoval Torres",
+    "sexo": "M",
+    "materias":["prog. web", "Base de datos", "ingles"]
+}]

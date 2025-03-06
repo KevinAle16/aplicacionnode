@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <title>Nodejs</title>
+</head>
+<body>
+
+<%- include('partials/header.ejs')%>
+<%- include('partials/nav.ejs')%>
+
+<div class="container">
+    <center>
+        <h3>Tabla de multiplicar</h3>
+    </center>
+</div>
+
+<section class="container-mt-5">
+    <div class="container-mt-5">
+        <center>
+            <form action="/p01" method="post" class="mb-3">
+                <div class="form-group">
+                    <label class="form-control mb-3" for="numero">Número</label>
+                    <input required type="number" name="numero" id="numero" class="form-control mb-3">
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar</button>
+                <a href="/practica1" class="btn btn-secondary">Limpiar</a>
+            </form>
+
+            <% if (typeof numero !== 'undefined' && numero !== null && !isNaN(numero) && numero !== '') { %>
+                <section>
+                    <center>
+                        <hr>
+                        <h3>Tabla de multiplicar del <%= numero %></h3>
+                        <hr>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Multiplicando</th>
+                                    <th>x</th>
+                                    <th>Multiplicador</th>
+                                    <th>Resultado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (let i = 1; i <= 10; i++) { %>
+                                    <tr>
+                                        <td><%= numero %></td>
+                                        <td>x</td>
+                                        <td><%= i %></td>
+                                        <td><%= numero * i %></td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </center>
+                </section>
+            <% } %>
+
+        </center>
+    </div>
+</section>
+
+<%- include('partials/footer.ejs')%>
+
+</body>
+</html>
