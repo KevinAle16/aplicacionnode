@@ -1,25 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-
-    <title>practica 03</title>
+    <title>Recibo de Nómina</title>
 </head>
 <body class="container">
+    <%- include('partials/header.ejs') %>
+    <%- include('partials/nav.ejs') %>
+    <div class="container">
+        <center>
+            <h3>Recibo de Nómina</h3>
+        </center>
 
+        <section class="formulario-container" style="padding: 20px;">
+            <div id="formulario" class="container">
+                <form action="/preExamen" method="post">
+                    <div class="form-group">
+                        <label for="numRecibo">Número de Recibo:</label>
+                        <input type="number" name="numRecibo" id="numRecibo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" name="nombre" id="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="puesto">Puesto:</label>
+                        <select name="puesto" id="puesto">
+                            <option value="1">Auxiliar</option>
+                            <option value="2">Albañil</option>
+                            <option value="3">Ing. Obra</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nivel">Nivel:</label>
+                        <select name="nivel" id="nivel">
+                            <option value="1">Base</option>
+                            <option value="2">Eventual</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dias">Días Trabajados:</label>
+                        <input type="number" name="dias" id="dias" required>
+                    </div>
+                    <div class="buttons" style="margin: 20px 0px;">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a href="/preExamen" class="btn btn-secondary">Nuevo</a>
+                    </div>
+                </form>
 
-<%- include('partials/header.ejs') %>
-
-
-<%- include('partials/nav.ejs') %>
-<div class="container">
-    <center>
-        <h3>Practica03</h3>
-    </center>
-
-</div>
-<%- include('partials/footer.ejs') %>
+                <section class="container">
+                    <center>
+                        <hr>
+                        <h2>Resultados:</h2>
+                        <hr>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Cálculo Pago</th>
+                                    <th>Cálculo Impuesto</th>
+                                    <th>Total a Pagar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (numRecibo) { 
+                                    let pagoDiario = puesto == 1 ? 100 : (puesto == 2 ? 200 : 300);
+                                    let totalPago = pagoDiario * dias;
+                                    let impuesto = nivel == 1 ? totalPago * 0.05 : totalPago * 0.03;
+                                    let totalPagar = totalPago - impuesto;
+                                %>
+                                <tr>
+                                    <td><%= totalPago.toFixed(2) %></td>
+                                    <td><%= impuesto.toFixed(2) %></td>
+                                    <td><%= totalPagar.toFixed(2) %></td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </center>
+                </section>
+            </div>
+        </section>
+    </div>
+    <%- include('partials/footer.ejs') %>
 </body>
 </html>

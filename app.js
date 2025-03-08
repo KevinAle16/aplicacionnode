@@ -62,10 +62,40 @@ app.post('/cotizacion',(req,res)=>{
 
 })
 
-app.get('/practica3',(req,res)=>{ 
-        res.render('practica03');
-        
-        })
+app.get('/preExamen', (req, res) => {
+    const params = {
+        numRecibo: req.query.numRecibo = "",
+        nombre: req.query.nombre = "",
+        puesto: req.query.puesto = "",
+        nivel: req.query.nivel = "",
+        dias: req.query.dias = "",
+        calculoPago: req.query.calculoPago = "",
+        calculoImpuesto: req.query.calculoImpuesto = "",
+        totalPagar: req.query.totalPagar = ""
+    };
+    res.render('practica03', params);
+});
+
+app.post('/preExamen', (req, res) => {
+    const params = {
+        numRecibo: req.body.numRecibo,
+        nombre: req.body.nombre,
+        puesto: req.body.puesto,
+        nivel: req.body.nivel,
+        dias: req.body.dias,
+    };
+    
+    let pagoDiario = params.puesto == 1 ? 100 : (params.puesto == 2 ? 200 : 300);
+    let totalPago = pagoDiario * (parseInt(params.dias) || 0);
+    let impuesto = totalPago * (params.nivel == 1 ? 0.05 : 0.03);
+    let totalPagar = totalPago - impuesto;
+
+    params.calculoPago = totalPago.toFixed(2);
+    params.calculoImpuesto = impuesto.toFixed(2);
+    params.totalPagar = totalPagar.toFixed(2);
+    
+    res.render('practica03', params);
+});
 
 const puerto = 3000;
 app.listen(puerto,()=>{
