@@ -16,7 +16,7 @@
 
         <section class="formulario-container" style="padding: 20px;">
             <div id="formulario" class="container">
-                <form action="/preExamen" method="post">
+                <form action="/preExamen" method="post" id="formNomina">
                     <div class="form-group">
                         <label for="numRecibo">Número de Recibo:</label>
                         <input type="number" name="numRecibo" id="numRecibo" required>
@@ -45,12 +45,13 @@
                         <input type="number" name="dias" id="dias" required>
                     </div>
                     <div class="buttons" style="margin: 20px 0px;">
-                        <button type="submit" class="btn btn-primary">Calcular</button>
-                        <a href="/preExamen" class="btn btn-secondary">Nuevo</a>
+                        <button type="button" class="btn btn-secondary" id="nuevo">Nuevo</button>
+                        <button type="button" class="btn btn-primary" id="guardar" disabled>Guardar</button>
+                        <button type="button" class="btn btn-success" id="mostrar" disabled>Mostrar</button>
                     </div>
                 </form>
 
-                <section class="container">
+                <section class="container" id="resultados" style="display: none;">
                     <center>
                         <hr>
                         <h2>Resultados:</h2>
@@ -58,24 +59,17 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Cálculo Pago</th>
-                                    <th>Cálculo Impuesto</th>
-                                    <th>Total a Pagar</th>
+                                    <td><%= calculoPago ? calculoPago : "Sin datos" %></td>
+                                    <td><%= calculoImpuesto ? calculoImpuesto : "Sin datos" %></td>
+                                    <td><%= totalPagar ? totalPagar : "Sin datos" %></td>
                                 </tr>
                             </thead>
                             <tbody>
-                                <% if (numRecibo) { 
-                                    let pagoDiario = puesto == 1 ? 100 : (puesto == 2 ? 200 : 300);
-                                    let totalPago = pagoDiario * dias;
-                                    let impuesto = nivel == 1 ? totalPago * 0.05 : totalPago * 0.03;
-                                    let totalPagar = totalPago - impuesto;
-                                %>
                                 <tr>
-                                    <td><%= totalPago.toFixed(2) %></td>
-                                    <td><%= impuesto.toFixed(2) %></td>
-                                    <td><%= totalPagar.toFixed(2) %></td>
+                                    <td id="calculoPago"></td>
+                                    <td id="calculoImpuesto"></td>
+                                    <td id="totalPagar"></td>
                                 </tr>
-                                <% } %>
                             </tbody>
                         </table>
                     </center>
@@ -84,5 +78,18 @@
         </section>
     </div>
     <%- include('partials/footer.ejs') %>
+    <script>
+        document.getElementById("nuevo").addEventListener("click", function() {
+            document.getElementById("guardar").disabled = false;
+        });
+        
+        document.getElementById("guardar").addEventListener("click", function() {
+            document.getElementById("mostrar").disabled = false;
+        });
+        
+        document.getElementById("mostrar").addEventListener("click", function() {
+            document.getElementById("resultados").style.display = "block";
+        });
+    </script>
 </body>
 </html>
