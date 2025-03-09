@@ -6,90 +6,89 @@
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
     <title>Recibo de Nómina</title>
 </head>
-<body class="container">
-    <%- include('partials/header.ejs') %>
-    <%- include('partials/nav.ejs') %>
-    <div class="container">
+<body>
+
+<%- include('partials/header.ejs')%>
+<%- include('partials/nav.ejs')%>
+
+<div class="container">
+    <center>
+        <h3>Recibo de Nómina</h3>
+    </center>
+</div>
+
+<section class="container-mt-5">
+    <div class="container-mt-5">
         <center>
-            <h3>Recibo de Nómina</h3>
-        </center>
+            <form action="/preExamen" method="post" class="mb-3">
+                <div class="form-group" style="max-width: 300px;">
+                    <label class="form-control" for="numRecibo">Número de Recibo</label>
+                    <input required type="number" name="numRecibo" id="numRecibo" class="form-control mb-3">
+                </div>
+                <div class="form-group" style="max-width: 300px;">
+                    <label class="form-control" for="nombre">Nombre</label>
+                    <input required type="text" name="nombre" id="nombre" class="form-control mb-3">
+                </div>
+                <div class="form-group" style="max-width: 300px;">
+                    <label class="form-control" for="puesto">Puesto</label>
+                    <select name="puesto" id="puesto" class="form-control mb-3">
+                        <option value="1">Auxiliar</option>
+                        <option value="2">Albañil</option>
+                        <option value="3">Ing. Obra</option>
+                    </select>
+                </div>
+                <div class="form-group" style="max-width: 300px;">
+                    <label class="form-control" for="nivel">Nivel</label>
+                    <select name="nivel" id="nivel" class="form-control mb-3">
+                        <option value="1">Base</option>
+                        <option value="2">Eventual</option>
+                    </select>
+                </div>
+                <div class="form-group" style="max-width: 300px;">
+                    <label class="form-control" for="dias">Días Trabajados</label>
+                    <input required type="number" name="dias" id="dias" class="form-control mb-3">
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="/preExamen" class="btn btn-secondary">Nuevo</a>
+                <button type="button" class="btn btn-success" id="mostrar" onclick="document.getElementById('resultados').style.display = 'block';">Mostrar</button>
+            </form>
 
-        <section class="formulario-container" style="padding: 20px;">
-            <div id="formulario" class="container">
-                <form action="/preExamen" method="post" id="formNomina">
-                    <div class="form-group">
-                        <label for="numRecibo">Número de Recibo:</label>
-                        <input type="number" name="numRecibo" id="numRecibo" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" name="nombre" id="nombre" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="puesto">Puesto:</label>
-                        <select name="puesto" id="puesto">
-                            <option value="1">Auxiliar</option>
-                            <option value="2">Albañil</option>
-                            <option value="3">Ing. Obra</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="nivel">Nivel:</label>
-                        <select name="nivel" id="nivel">
-                            <option value="1">Base</option>
-                            <option value="2">Eventual</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="dias">Días Trabajados:</label>
-                        <input type="number" name="dias" id="dias" required>
-                    </div>
-                    <div class="buttons" style="margin: 20px 0px;">
-                        <button type="button" class="btn btn-secondary" id="nuevo">Nuevo</button>
-                        <button type="button" class="btn btn-primary" id="guardar" disabled>Guardar</button>
-                        <button type="button" class="btn btn-success" id="mostrar" disabled>Mostrar</button>
-                    </div>
-                </form>
-
-                <section class="container" id="resultados" style="display: none;">
+            <% if (typeof numRecibo !== 'undefined' && numRecibo !== null && !isNaN(numRecibo) && numRecibo !== '') { %>
+                <section id="resultados" style="display: none;">
                     <center>
                         <hr>
-                        <h2>Resultados:</h2>
+                        <h3>Recibo de Nómina - <%= numRecibo %></h3>
                         <hr>
-                        <table class="table">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <td><%= calculoPago ? calculoPago : "Sin datos" %></td>
-                                    <td><%= calculoImpuesto ? calculoImpuesto : "Sin datos" %></td>
-                                    <td><%= totalPagar ? totalPagar : "Sin datos" %></td>
+                                    <th>Cálculo Pago</th>
+                                    <th>Cálculo Impuesto</th>
+                                    <th>Total a Pagar</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <% 
+                                let pagoDiario = puesto == 1 ? 100 : (puesto == 2 ? 200 : 300);
+                                let totalPago = pagoDiario * dias;
+                                let impuesto = totalPago * (nivel == 1 ? 0.05 : 0.03);
+                                let totalPagar = totalPago - impuesto;
+                                %>
                                 <tr>
-                                    <td id="calculoPago"></td>
-                                    <td id="calculoImpuesto"></td>
-                                    <td id="totalPagar"></td>
+                                    <td><%= totalPago.toFixed(2) %></td>
+                                    <td><%= impuesto.toFixed(2) %></td>
+                                    <td><%= totalPagar.toFixed(2) %></td>
                                 </tr>
                             </tbody>
                         </table>
                     </center>
                 </section>
-            </div>
-        </section>
+            <% } %>
+        </center>
     </div>
-    <%- include('partials/footer.ejs') %>
-    <script>
-        document.getElementById("nuevo").addEventListener("click", function() {
-            document.getElementById("guardar").disabled = false;
-        });
-        
-        document.getElementById("guardar").addEventListener("click", function() {
-            document.getElementById("mostrar").disabled = false;
-        });
-        
-        document.getElementById("mostrar").addEventListener("click", function() {
-            document.getElementById("resultados").style.display = "block";
-        });
-    </script>
+</section>
+
+<%- include('partials/footer.ejs')%>
+
 </body>
 </html>
