@@ -64,14 +64,14 @@ app.post('/cotizacion',(req,res)=>{
 
 app.get('/preExamen', (req, res) => { 
     const params = {
-        numRecibo: req.query.numRecibo || "",
-        nombre: req.query.nombre || "",
-        puesto: req.query.puesto || "",
-        nivel: req.query.nivel || "",
-        dias: req.query.dias || "",
-        calculoPago: req.query.calculoPago || "",
-        calculoImpuesto: req.query.calculoImpuesto || "",
-        totalPagar: req.query.totalPagar || ""
+        numRecibo: req.query.numRecibo,
+        nombre: req.query.nombre ,
+        puesto: req.query.puesto ,
+        nivel: req.query.nivel ,
+        dias: req.query.dias ,
+        calculoPago: req.query.calculoPago ,
+        calculoImpuesto: req.query.calculoImpuesto ,
+        totalPagar: req.query.totalPagar 
     };
     res.render('practica03', params);
 });
@@ -94,7 +94,6 @@ app.post('/preExamen', (req, res) => {
     params.calculoImpuesto = impuesto.toFixed(2);
     params.totalPagar = totalPagar.toFixed(2);
     
-    console.log(params);
     res.render('practica03', params);
 });
 
