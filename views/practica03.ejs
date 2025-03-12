@@ -23,17 +23,17 @@
         <form action="/preExamen" method="post" class="mb-3">
             <div class="form-group" style="max-width: 300px;">
                 <label class="form-control" for="numRecibo">Número de Recibo</label>
-                <input required type="number" name="numRecibo" id="numRecibo" class="form-control mb-3">
+                <input required type="number" name="numRecibo" id="numRecibo" class="form-control mb-3" disabled>
             </div>
 
             <div class="form-group" style="max-width: 300px;">
                 <label class="form-control" for="nombre">Nombre</label>
-                <input required type="text" name="nombre" id="nombre" class="form-control mb-3">
+                <input required type="text" name="nombre" id="nombre" class="form-control mb-3" disabled>
             </div>
 
             <div class="form-group" style="max-width: 300px;">
                 <label class="form-control" for="puesto">Puesto</label>
-                <select name="puesto" id="puesto" class="form-control mb-3">
+                <select name="puesto" id="puesto" class="form-control mb-3" disabled>
                     <option value="1">Auxiliar</option>
                     <option value="2">Albañil</option>
                     <option value="3">Ing. Obra</option>
@@ -42,7 +42,7 @@
 
             <div class="form-group" style="max-width: 300px;">
                 <label class="form-control" for="nivel">Nivel</label>
-                <select name="nivel" id="nivel" class="form-control mb-3">
+                <select name="nivel" id="nivel" class="form-control mb-3" disabled>
                      <option value="1">Base</option>
                      <option value="2">Eventual</option>
                  </select>
@@ -50,10 +50,10 @@
 
             <div class="form-group" style="max-width: 300px;">
                 <label class="form-control" for="dias">Días Trabajados</label>
-                <input required type="number" name="dias" id="dias" class="form-control mb-3">
+                <input required type="number" name="dias" id="dias" class="form-control mb-3" disabled>
              </div>
                 <button type="submit" class="btn btn-primary">Guardar</button>
-                <a href="/preExamen" class="btn btn-secondary">Nuevo</a>
+                <a href="/preExamen" class="btn btn-secondary" id="nuevo">Nuevo</a>
                 <button type="button" class="btn btn-success" id="mostrar" onclick="document.getElementById('resultados').style.display = 'block';">Mostrar</button>
             </form>
 
@@ -83,7 +83,6 @@
                     <td><%= impuesto.toFixed(2) %></td>
                     <td><%= totalPagar.toFixed(2) %></td>
              </tr>
-                            
      </tbody>
         </table>
     </center>
@@ -94,6 +93,17 @@
 </section>
 
 <%- include('partials/footer.ejs')%>
+
+<script>
+    document.getElementById("nuevo").addEventListener("click", function(event) {
+        event.preventDefault(); // Evita que el enlace recargue la página
+        
+        // Seleccionamos todos los inputs y selects dentro del formulario
+        document.querySelectorAll("input, select").forEach(element => {
+            element.removeAttribute("disabled");
+        });
+    });
+</script>
 
 </body>
 </html>
