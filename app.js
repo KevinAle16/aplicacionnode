@@ -97,6 +97,70 @@ app.post('/preExamen', (req, res) => {
     res.render('practica03', params);
 });
 
+const obtenerNombreTipo = (tipo) => {
+    const tipos = {
+        1: "Papelería",
+        2: "Útiles escolares",
+        3: "Material de oficina"
+    };
+    return tipos[tipo] || "Desconocido";
+};
+
+// Ruta GET para cargar la vista sin datos iniciales
+app.get('/examen1', (req, res) => {
+    fs.readFile('productos.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error("Error al leer el archivo JSON", err);
+            return res.status(500).send("Error al cargar los productos.");
+        }
+        const productos = JSON.parse(data);
+        let tiposUnicos = [...new Set(productos.map(p => p.tipo))];
+        res.render('practica04', { productos: [], totalCostoCantidad: 0, totalVentaCantidad: 0, totalProductos: 0, ganancia: 0, tiposUnicos });
+    });
+});
+app.post('/examen1', (req, res) => {
+    const tipoSeleccionado = parseInt(req.body.tipo);
+
+    fs.readFile('productos.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error("Error al leer el archivo JSON", err);
+            return res.status(500).send("Error al cargar los productos.");
+        }
+
+        const productos = JSON.parse(data);
+        let productosFiltrados = productos.filter(p => p.tipo === tipoSeleccionado);
+
+        let totalCostoCantidad = 0;
+        let totalVentaCantidad = 0;
+        let totalProductos = 0;
+        let costoVenta = 1.15;
+
+        productosFiltrados.forEach(producto => {
+            let costoCantidad = producto.costo * producto.cantidad;
+            let ventaCantidad = (producto.costo * costoVenta) * producto.cantidad;
+            
+            totalCostoCantidad += costoCantidad;
+            totalVentaCantidad += ventaCantidad;
+            totalProductos += producto.cantidad;
+        });
+
+        let ganancia = totalVentaCantidad - totalCostoCantidad;
+        let tiposUnicos = [...new Set(productos.map(p => p.tipo))];
+
+        res.render('practica04', {
+            productos: productosFiltrados,
+            totalCostoCantidad: totalCostoCantidad.toFixed(2),
+            totalVentaCantidad: totalVentaCantidad.toFixed(2),
+            totalProductos,
+            ganancia: ganancia.toFixed(2),
+            tiposUnicos
+        });
+    });
+});
+
+app.post('/limpiar', (req, res) => {
+    res.redirect('/examen1');
+});
 
 const puerto = 3000;
 app.listen(puerto,()=>{

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <title>Cálculos y Resultados</title>
+</head>
+<body class="container">
+
+<%- include('partials/header.ejs') %>
+<%- include('partials/nav.ejs') %>
+
+<div class="container">
+    <center>
+        <h3>Cálculos y Resultados</h3>
+    </center>
+
+    <section class="container" style="padding: 20px;">
+        <center>
+            <hr>
+            <h2>Filtrar Productos por Tipo</h2>
+            <hr>
+
+            <form action="/examen1" method="post" style="display: inline-block; margin-right: 10px;">
+                <label for="tipo">Selecciona el tipo:</label>
+                <select name="tipo" id="tipo" required>
+                    <option value="">Tipo</option>
+                    <% tiposUnicos.forEach(tipo => { %>
+                        <option value="<%= tipo %>">Tipo <%= tipo %></option>
+                    <% }) %>
+                </select>
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </form>
+
+            <form action="/limpiar" method="post" style="display: inline-block;">
+                <button type="submit" class="btn btn-secondary">Limpiar</button>
+            </form>
+        </center>
+
+        <% if (productos.length > 0) { %>
+        <center>
+            <hr>
+            <h2>Listado de Productos</h2>
+            <hr>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Producto</th>
+                        <th>Costo</th>
+                        <th>Costo de Venta</th>
+                        <th>Cantidad</th>
+                        <th>Tipo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% productos.forEach(producto => { 
+                        let totalCosto = (producto.costo * producto.cantidad).toFixed(2);
+                        let totalVenta = ((producto.costo * 1.15) * producto.cantidad).toFixed(2);
+                    %>
+                    <tr>
+                        <td><%= producto.id %></td>
+                        <td><%= producto.producto %></td>
+                        <td>$<%= producto.costo.toFixed(2) %></td>
+                        <td>$<%= (producto.costo * 1.15).toFixed(2) %></td>
+                        <td><%= producto.cantidad %></td>
+                        <td>Tipo <%= producto.tipo %></td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+
+            <hr>
+            <h2>Resumen de Cálculos</h2>
+            <hr>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Descripción</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Total de Productos Vendidos</strong></td>
+                        <td><%= totalProductos %></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total de Costo</strong></td>
+                        <td>$<%= totalCostoCantidad %></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total de Venta</strong></td>
+                        <td>$<%= totalVentaCantidad %></td>
+                    </tr>
+                    <tr class="table-success">
+                        <td><strong>Ganancia</strong></td>
+                        <td><strong>$<%= ganancia %></strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </center>
+        <% } %>
+    </section>
+</div>
+
+<%- include('partials/footer.ejs') %>
+
+</body>
+</html>
