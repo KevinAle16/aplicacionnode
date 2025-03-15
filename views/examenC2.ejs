@@ -46,21 +46,22 @@
             <a href="/examenC2" class="btn btn-secondary">Limpiar</a>
         </div>
     </form>
+
     <% if (vista) { %>
         <% let alumnosFiltrados = alumnos.filter(a => (nivel == "0" || a.nivel == nivel) && (turno == "0" || a.turno == turno)); %>
-        <% if (vista === "resumen") { %>
-            <% 
+            <% if (vista === "resumen") { %>
+                <% 
                 let totalAlumnos = alumnosFiltrados.length;
                 let promedioGeneral = totalAlumnos > 0 ? (alumnosFiltrados.reduce((sum, a) => sum + a.promedio, 0) / totalAlumnos).toFixed(2) : 0;
                 let menores7 = alumnosFiltrados.filter(a => a.promedio < 7).length;
                 let mayores7 = alumnosFiltrados.filter(a => a.promedio >= 7).length;
-            %>
+                %>
 
             <ul class="list-group">
-                <li class="list-group-item"><strong>Número de registros:</strong> <%= totalAlumnos %></li>
-                <li class="list-group-item"><strong>Promedio global:</strong> <%= promedioGeneral %></li>
-                <li class="list-group-item"><strong>Alumnos con promedio < 7:</strong> <%= menores7 %></li>
-                <li class="list-group-item"><strong>Alumnos con promedio ≥ 7:</strong> <%= mayores7 %></li>
+                <li class="list-group-item">Número de registros: <%= totalAlumnos %></li>
+                <li class="list-group-item">Promedio global: <%= promedioGeneral %></li>
+                <li class="list-group-item">Alumnos con promedio < 7: <%= menores7 %></li>
+                <li class="list-group-item">Alumnos con promedio ≥ 7: <%= mayores7 %></li>
             </ul>
 
         <% } else if (vista === "detalle") { %>
@@ -89,6 +90,5 @@
         <% } %>
     <% } %>
 </div>
-
 </body>
 </html>

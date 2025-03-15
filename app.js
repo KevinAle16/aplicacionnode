@@ -141,8 +141,8 @@ app.post('/examen1', (req, res) => {
 });
 
 app.get('/examenC2', (req, res) => {
-    fs.readFile('alumnos.json', 'utf8', (err, data) => {
 
+    fs.readFile('alumnos.json', 'utf8', () => {
         res.render('examenC2', { alumnos: [], nivel: "0", turno: "0", vista: "" });
     });
 });
@@ -151,8 +151,7 @@ app.get('/examenC2', (req, res) => {
 app.post('/examenC2', (req, res) => {
     const { nivel, turno, vista } = req.body;
 
-    fs.readFile('alumnos.json', 'utf8', (err, data) => {
-        
+    fs.readFile('alumnos.json', 'utf8', (err, data) => {    
         let alumnos = JSON.parse(data);
         res.render('examenC2', { alumnos, nivel, turno, vista });
     });

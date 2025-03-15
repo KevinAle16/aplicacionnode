@@ -96,9 +96,8 @@
 
 <script>
     document.getElementById("nuevo").addEventListener("click", function(event) {
-        event.preventDefault(); // Evita que el enlace recargue la página
-        
-        // Seleccionamos todos los inputs y selects dentro del formulario
+        event.preventDefault(); 
+
         document.querySelectorAll("input, select").forEach(element => {
             element.removeAttribute("disabled");
         });
