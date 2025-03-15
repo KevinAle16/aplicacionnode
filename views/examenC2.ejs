@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <title>Listado de Alumnos</title>
+</head>
+<body class="container">
+
+<%- include('partials/header.ejs') %>
+
+<div class="container">
+    <center>
+        <h2>Listado de alumnos</h2>
+    </center>
+
+    <form action="/examenC2" method="post" class="row">
+        <div class="col-md-3">
+            <label for="nivel" class="form-label">Nivel</label>
+            <select name="nivel" id="nivel" class="form-select">
+                <option value="0" <%= nivel == "0" ? "selected" : "" %>>Todos</option>
+                <option value="1" <%= nivel == "1" ? "selected" : "" %>>Primaria</option>
+                <option value="2" <%= nivel == "2" ? "selected" : "" %>>Secundaria</option>
+                <option value="3" <%= nivel == "3" ? "selected" : "" %>>Preparatoria</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="turno" class="form-label">Turno</label>
+            <select name="turno" id="turno" class="form-select">
+                <option value="0" <%= turno == "0" ? "selected" : "" %>>Todos</option>
+                <option value="1" <%= turno == "1" ? "selected" : "" %>>Matutino</option>
+                <option value="2" <%= turno == "2" ? "selected" : "" %>>Vespertino</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="vista" class="form-label">Tipo de Vista</label>
+            <select name="vista" id="vista" class="form-select">
+                <option value="resumen" <%= vista == "resumen" ? "selected" : "" %>>Resumen</option>
+                <option value="detalle" <%= vista == "detalle" ? "selected" : "" %>>Detalle</option>
+            </select>
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <a href="/examenC2" class="btn btn-secondary">Limpiar</a>
+        </div>
+    </form>
+    <% if (vista) { %>
+        <% let alumnosFiltrados = alumnos.filter(a => (nivel == "0" || a.nivel == nivel) && (turno == "0" || a.turno == turno)); %>
+        <% if (vista === "resumen") { %>
+            <% 
+                let totalAlumnos = alumnosFiltrados.length;
+                let promedioGeneral = totalAlumnos > 0 ? (alumnosFiltrados.reduce((sum, a) => sum + a.promedio, 0) / totalAlumnos).toFixed(2) : 0;
+                let menores7 = alumnosFiltrados.filter(a => a.promedio < 7).length;
+                let mayores7 = alumnosFiltrados.filter(a => a.promedio >= 7).length;
+            %>
+
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Número de registros:</strong> <%= totalAlumnos %></li>
+                <li class="list-group-item"><strong>Promedio global:</strong> <%= promedioGeneral %></li>
+                <li class="list-group-item"><strong>Alumnos con promedio < 7:</strong> <%= menores7 %></li>
+                <li class="list-group-item"><strong>Alumnos con promedio ≥ 7:</strong> <%= mayores7 %></li>
+            </ul>
+
+        <% } else if (vista === "detalle") { %>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Matrícula</th>
+                        <th>Nombre</th>
+                        <th>Promedio</th>
+                        <th>Nivel</th>
+                        <th>Turno</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% alumnosFiltrados.forEach(alumno => { %>
+                    <tr>
+                        <td><%= alumno.matricula %></td>
+                        <td><%= alumno.nombre %></td>
+                        <td><%= alumno.promedio %></td>
+                        <td><%= alumno.nivel == 1 ? "Primaria" : (alumno.nivel == 2 ? "Secundaria" : "Preparatoria") %></td>
+                        <td><%= alumno.turno == 1 ? "Matutino" : "Vespertino" %></td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
+    <% } %>
+</div>
+
+</body>
+</html>
