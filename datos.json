@@ -1,18 +1,6 @@
 [{    
-    "matricula":"2021030662",
-    "nombre": "Kevin Alejandro Fuentes",
+    "carrera":"Tecnologias de la Informacion",
+    "nombre": "Kevin Alejandro Fuentes Talamantes",
     "sexo": "M",
-    "materias":["prog. web", "Base de datos", "ingles"]
-},
-{
-    "matricula":"2022030710",
-    "nombre": "Marco Vinicio Junior",
-    "sexo": "M",
-    "materias":["prog. web", "Base de datos", "ingles"]
-},
-{
-    "matricula":"2020826373",
-    "nombre": "Enrique Sandoval Torres",
-    "sexo": "M",
-    "materias":["prog. web", "Base de datos", "ingles"]
+    "habilidades":["HTML5, CSS3, JavaScript, Node.js,Python, Bases de Datos, Trabajo en Equipo, Resolución de Problemas"]
 }]

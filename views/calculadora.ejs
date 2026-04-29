@@ -20,13 +20,14 @@
 <section class="container-mt-5">
     <div class="container-mt-5">
         <center>
-            <form action="/p01" method="post" class="mb-3">
+            <form action="/cal" method="post" class="mb-3">
                 <div class="form-group">
-                    <label class="form-control mb-3" for="numero">Número</label>
-                    <input required type="number" name="numero" id="numero" class="form-control mb-3">
+                    <label class="form-control mb-3" for="numero" style="width: 300px;">Coloca el numero número</label>
+                     <div style="font-size: 50px; color: #000000;">↓</div>
+                    <input required type="number" name="numero" id="numero" class="form-control mb-3" style="width: 300px;">
                 </div>
-                <button type="submit" class="btn btn-primary">Enviar</button>
-                <a href="/practica1" class="btn btn-secondary">Limpiar</a>
+                <button type="submit" class="btn btn-primary">Multiplicar</button>
+                <a href="/calculadora" class="btn btn-secondary">Limpiar</a>
             </form>
 
             <% if (typeof numero !== 'undefined' && numero !== null && !isNaN(numero) && numero !== '') { %>
@@ -35,7 +36,7 @@
                         <hr>
                         <h3>Tabla de multiplicar del <%= numero %></h3>
                         <hr>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" style="width: auto; font-size: 14px;">
                             <thead>
                                 <tr>
                                     <th>Multiplicando</th>

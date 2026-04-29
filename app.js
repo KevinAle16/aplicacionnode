@@ -22,20 +22,20 @@ let datos = JSON.parse(fs.readFileSync('datos.json' , 'utf8'));
 //primer peticion por el metodo get
 app.get('/',(req,res)=>{
 
-    res.render('index',{titulo:"Listado de alumnos", listado:datos});
+    res.render('index',{titulo:"", listado:datos});
 
 })
-app.get('/practica1',(req,res)=>{ 
-res.render('practica01',{numero:""});
+app.get('/calculadora',(req,res)=>{ 
+res.render('calculadora',{numero:""});
 
 })
 
-app.post('/p01',(req,res)=>{
+app.post('/cal',(req,res)=>{
     // parametros para recibir los datos
     const params ={
         numero: req.body.numero,
     }
-    res.render('practica01',params);
+    res.render('calculadora',params);
     //body : cuando los datos viene de un formulario por el metodo post
 })
 
@@ -59,7 +59,6 @@ app.post('/cotizacion',(req,res)=>{
         
         }
         res.render('practica02',params);
-
 })
 
 app.get('/preExamen', (req, res) => { 

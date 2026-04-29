@@ -28,16 +28,28 @@
                         <th>Matricula</th>
                         <th>Nombre</th>
                         <th>Sexo</th>
-                        <th>Materias</th>
                     </tr>
                     <%
                         for(i=0;i<listado.length;i++){ %>
 
                             <tr>
-                                <td><%=listado[i].matricula%></td>
+                                <td><%=listado[i].carrera%></td>
                                 <td><%=listado[i].nombre%></td>
                                 <td><%=listado[i].sexo%></td>
-                                <td><%=listado[i].materias%></td>
+                            </tr>
+                    <%
+                        }
+                        %>
+                </table>
+                <table class="table">
+                    <tr>
+                        <th>Habilidades</th>
+                    </tr>
+                    <%
+                        for(i=0;i<listado.length;i++){ %>
+
+                            <tr>
+                                <td><%=listado[i].habilidades%></td>
                             </tr>
                     <%
                         }
