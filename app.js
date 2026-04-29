@@ -16,6 +16,7 @@ app.use(express.json());
 
 //declarar array de objetos
 let datos = JSON.parse(fs.readFileSync('datos.json' , 'utf8'));
+let marcasModelos = JSON.parse(fs.readFileSync('marcasymodelos.json' , 'utf8'));
 
 //declarar un array de objetos
 
@@ -45,9 +46,14 @@ app.get('/cotizacion',(req,res)=>{
         valor: req.query.valor,
         pinicial: req.query.pinicial,
         plazos: req.query.plazos,
-
+        marca: req.query.marca,
+        modelo: req.query.modelo,
+        anio: req.query.anio,
+        iva: req.query.iva,
+        isan: req.query.isan,
+        marcasModelos: marcasModelos
     }
-    res.render('practica02',params);
+    res.render('coticar',params);
     
 })
 
@@ -56,9 +62,14 @@ app.post('/cotizacion',(req,res)=>{
         valor: req.body.valor,
         pinicial: req.body.pinicial,
         plazos: req.body.plazos,
-        
+        marca: req.body.marca,
+        modelo: req.body.modelo,
+        anio: req.body.anio,
+        iva: req.body.iva,
+        isan: req.body.isan,
+        marcasModelos: marcasModelos
         }
-        res.render('practica02',params);
+        res.render('coticar',params);
 })
 
 app.get('/preExamen', (req, res) => { 

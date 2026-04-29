@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+
+    <title>Cotización de Carro</title>
+</head>
+<body class="container">
+
+
+<%- include('partials/header.ejs') %>
+<%- include('partials/nav.ejs') %>
+<div class="container">
+    <center>
+        <h3>Cotización</h3>
+    </center>
+
+    <section class="formulario-container" style="padding: 20px;">
+            <div id="formulario" class="container">
+                <form action="/cotizacion" method="post" onsubmit="return validar()">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="marca" class="form-label">Marca:</label>
+                                    <select name="marca" id="marca" class="form-select" onchange="this.form.submit()" required>
+                                        <option value="">Seleccionar Marca</option>
+                                        <% marcasModelos.forEach(m => { %>
+                                            <option value="<%= m.marca %>" <%= marca === m.marca ? 'selected' : '' %>><%= m.marca %></option>
+                                        <% }); %>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="modelo" class="form-label">Modelo:</label>
+                                    <select name="modelo" id="modelo" class="form-select" required>
+                                        <option value="">Seleccionar Modelo</option>
+                                        <% if (marca) { %>
+                                            <% const marcaSeleccionada = marcasModelos.find(m => m.marca === marca); %>
+                                            <% if (marcaSeleccionada) { %>
+                                                <% marcaSeleccionada.modelos.forEach(mod => { %>
+                                                    <option value="<%= mod %>" <%= modelo === mod ? 'selected' : '' %>><%= mod %></option>
+                                                <% }); %>
+                                            <% } %>
+                                        <% } %>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="anio" class="form-label">Año:</label>
+                                    <input type="number" name="anio" id="anio" class="form-control" value="<%-anio%>" min="1900" max="2030" step="1" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="valor" class="form-label">Valor del automóvil:</label>
+                                    <input type="number" name="valor" id="valor" class="form-control" value="<%-valor%>" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="pinicial" class="form-label">Porcentaje de pago inicial:</label>
+                                    <input type="number" name="pinicial" id="pinicial" class="form-control" value="<%-pinicial%>" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="plazos" class="form-label">Plazo:</label>
+                                    <select name="plazos" id="plazos" class="form-select">
+                                        <option value="12" <%= plazos == 12 ? 'selected':'' %>>12 Meses</option>
+                                        <option value="24" <%= plazos == 24 ? 'selected':'' %>>24 Meses</option>
+                                        <option value="36" <%= plazos == 36 ? 'selected':'' %>>36 Meses</option>
+                                        <option value="48" <%= plazos == 48 ? 'selected':'' %>>48 Meses</option>
+                                        <option value="60" <%= plazos == 60 ? 'selected':'' %>>60 Meses</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="iva" class="form-label">IVA (%):</label>
+                                    <input type="number" name="iva" id="iva" class="form-control" value="<%-iva || 16%>" step="0.01" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="isan" class="form-label">ISAN (%):</label>
+                                    <input type="number" name="isan" id="isan" class="form-control" value="<%-isan || 0%>" step="0.01" required>
+                                </div>
+                            </div>
+
+                            <div class="text-center" style="margin: 20px 0px;">
+                                <button type="submit" class="btn btn-primary">Enviar</button>
+                                <a href="/cotizacion" class="btn btn-secondary">Limpiar</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <section class="container mt-4">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 text-center">
+                            <hr>
+                            <h2 class="mb-2">Factura:</h2>
+                            <hr>
+                        </div>
+                    </div>
+                    
+                    <% if (valor) { 
+                        let valorNum = Number(valor);
+                        let pinicialNum = Number(pinicial);
+                        let plazosNum = Number(plazos);
+                        let ivaNum = Number(iva || 0);
+                        let isanNum = Number(isan || 0);
+                        
+                        let impuestos = valorNum * ((ivaNum + isanNum) / 100);
+                        let valorConImpuestos = valorNum + impuestos;
+                        let pagoInicial = valorConImpuestos * (pinicialNum / 100);
+                        let totalFinanciar = valorConImpuestos - pagoInicial;
+                        let pagoMensual = totalFinanciar / plazosNum;
+                    %>
+                    <div class="card mt-4" style="max-width: 600px; margin: 0 auto;">
+                        <div class="card-header bg-primary text-white text-center">
+                            <h4 class="mb-0">📄 Cotización de Financiamiento</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-6"><strong>Fecha:</strong></div>
+                                <div class="col-6 text-end"><%= new Date().toLocaleDateString('es-MX') %></div>
+                            </div>
+                            <hr>
+                            <div class="row mb-3">
+                                <div class="col-6"><strong>Marca:</strong></div>
+                                <div class="col-6 text-end"><%= marca %></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6"><strong>Modelo:</strong></div>
+                                <div class="col-6 text-end"><%= modelo %></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6"><strong>Año:</strong></div>
+                                <div class="col-6 text-end"><%= anio %></div>
+                            </div>
+                            <hr>
+                            <div class="row mb-3">
+                                <div class="col-6"><strong>Valor del Automóvil:</strong></div>
+                                <div class="col-6 text-end">$<%= valorNum.toFixed(2) %></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6"><strong>IVA (<%= iva %>%):</strong></div>
+                                <div class="col-6 text-end">$<%= (valorNum * ivaNum / 100).toFixed(2) %></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6"><strong>ISAN (<%= isan %>%):</strong></div>
+                                <div class="col-6 text-end">$<%= (valorNum * isanNum / 100).toFixed(2) %></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6"><strong>Total con Impuestos:</strong></div>
+                                <div class="col-6 text-end">$<%= valorConImpuestos.toFixed(2) %></div>
+                            </div>
+                            <hr>
+                            <div class="row mb-3">
+                                <div class="col-6"><strong>Pago Inicial (<%= pinicial %>%):</strong></div>
+                                <div class="col-6 text-end">$<%= pagoInicial.toFixed(2) %></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6"><strong>Total a Financiar:</strong></div>
+                                <div class="col-6 text-end">$<%= totalFinanciar.toFixed(2) %></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6"><strong>Plazo:</strong></div>
+                                <div class="col-6 text-end"><%= plazos %> Meses</div>
+                            </div>
+                            <hr>
+                            <div class="row bg-light p-3 rounded">
+                                <div class="col-6"><strong><h4>Pago Mensual:</h4></strong></div>
+                                <div class="col-6 text-end"><h4 class="text-success">$<%= pagoMensual.toFixed(2) %></h4></div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center text-muted">
+                            <small>Cotización válida por 30 días</small>
+                        </div>
+                    </div>
+                    <% } %>
+                </section>
+
+            </div>
+
+    </section>
+
+</div>
+<%- include('partials/footer.ejs') %>
+</body>
+</html>

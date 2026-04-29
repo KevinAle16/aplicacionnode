@@ -1,0 +1,82 @@
+[
+  {
+    "marca": "Toyota",
+    "modelos": ["Corolla", "Camry", "RAV4", "Hilux", "Supra"]
+  },
+  {
+    "marca": "Ford",
+    "modelos": ["Fiesta", "Focus", "Mustang", "Explorer", "F-150"]
+  },
+  {
+    "marca": "Chevrolet",
+    "modelos": ["Spark", "Cruze", "Malibu", "Silverado", "Camaro"]
+  },
+  {
+    "marca": "Honda",
+    "modelos": ["Civic", "Accord", "CR-V", "HR-V", "Pilot"]
+  },
+  {
+    "marca": "Nissan",
+    "modelos": ["Versa", "Sentra", "Altima", "Murano", "Frontier"]
+  },
+  {
+    "marca": "Volkswagen",
+    "modelos": ["Gol", "Jetta", "Passat", "Tiguan", "Taos"]
+  },
+  {
+    "marca": "BMW",
+    "modelos": ["Serie 3", "Serie 5", "X3", "X5", "M4"]
+  },
+  {
+    "marca": "Mercedes-Benz",
+    "modelos": ["Clase C", "Clase E", "GLA", "GLC", "S-Class"]
+  },
+  {
+    "marca": "Hyundai",
+    "modelos": ["i10", "Accent", "Elantra", "Tucson", "Santa Fe"]
+  },
+  {
+    "marca": "Kia",
+    "modelos": ["Picanto", "Rio", "Forte", "Sportage", "Sorento"]
+  },
+  {
+    "marca": "Mazda",
+    "modelos": ["Mazda2", "Mazda3", "Mazda6", "CX-5", "CX-9"]
+  },
+  {
+    "marca": "Subaru",
+    "modelos": ["Impreza", "Legacy", "Outback", "Forester", "WRX"]
+  },
+  {
+    "marca": "Audi",
+    "modelos": ["A3", "A4", "Q5", "Q7", "RS7"]
+  },
+  {
+    "marca": "Renault",
+    "modelos": ["Kwid", "Sandero", "Logan", "Duster", "Koleos"]
+  },
+  {
+    "marca": "Peugeot",
+    "modelos": ["208", "308", "2008", "3008", "508"]
+  },
+  {
+    "marca": "Fiat",
+    "modelos": ["Mobi", "Argo", "Cronos", "Strada", "Toro"]
+  },
+  {
+    "marca": "Tesla",
+    "modelos": ["Model S", "Model 3", "Model X", "Model Y", "Cybertruck"]
+  },
+  {
+    "marca": "Volvo",
+    "modelos": ["S60", "S90", "XC40", "XC60", "XC90"]
+  },
+  {
+    "marca": "Jeep",
+    "modelos": ["Wrangler", "Compass", "Renegade", "Grand Cherokee", "Gladiator"]
+  },
+  {
+    "marca": "Mitsubishi",
+    "modelos": ["Mirage", "Lancer", "Outlander", "ASX", "Montero"]
+  }
+]
