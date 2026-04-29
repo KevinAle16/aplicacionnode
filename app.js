@@ -72,7 +72,7 @@ app.post('/cotizacion',(req,res)=>{
         res.render('coticar',params);
 })
 
-app.get('/preExamen', (req, res) => { 
+app.get('/recNomina', (req,res) => { 
     const params = {
         numRecibo: req.query.numRecibo,
         nombre: req.query.nombre ,
@@ -81,30 +81,35 @@ app.get('/preExamen', (req, res) => {
         dias: req.query.dias ,
         calculoPago: req.query.calculoPago ,
         calculoImpuesto: req.query.calculoImpuesto ,
-        totalPagar: req.query.totalPagar 
+        totalPagar: req.query.totalPagar, 
+        fechaPago: req.query.fechaPago,
+        periodoInicio: req.query.periodoInicio,
+        periodoFin: req.query.periodoFin,
+        periodicidad: req.query.periodicidad ,
+        horasDobles: req.query.horasDobles,
+        horasTriples: req.query.horasTriples,  
+        formaPago: req.query.formaPago
     };
-    res.render('practica03', params);
+    res.render('nomina',params);
 });
 
-app.post('/preExamen', (req, res) => {
+app.post('/recNomina', (req,res) => {
     const params = {
         numRecibo: req.body.numRecibo,
         nombre: req.body.nombre,
         puesto: req.body.puesto,
         nivel: req.body.nivel,
-        dias: req.body.dias
+        dias: req.body.dias,
+        fechaPago: req.body.fechaPago,
+        periodoInicio: req.body.periodoInicio,
+        periodoFin: req.body.periodoFin,
+        periodicidad: req.body.periodicidad,
+        horasDobles: req.body.horasDobles,
+        horasTriples: req.body.horasTriples,   
+        formaPago: req.body.formaPago
     };
     
-    let pagoDiario = params.puesto == 1 ? 100 : (params.puesto == 2 ? 200 : 300);
-    let totalPago = pagoDiario * (parseInt(params.dias) || 0);
-    let impuesto = totalPago * (params.nivel == 1 ? 0.05 : 0.03);
-    let totalPagar = totalPago - impuesto;
-
-    params.calculoPago = totalPago.toFixed(2);
-    params.calculoImpuesto = impuesto.toFixed(2);
-    params.totalPagar = totalPagar.toFixed(2);
-    
-    res.render('practica03', params);
+    res.render('nomina',params);
 });
 
 app.get('/examen1', (req, res) => {

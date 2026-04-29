@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <title>Recibo de Nómina</title>
+</head>
+<body>
+
+<%- include('partials/header.ejs')%>
+<%- include('partials/nav.ejs')%>
+
+<div class="container">
+    <center>
+        <h3>Recibo de Nómina</h3>
+    </center>
+</div>
+
+<section class="container-mt-5">
+<div class="container-mt-5">
+    <center>
+        <form action="/recNomina" method="post" class="mb-3">
+            <div class="form-group" style="max-width: 300px;">
+                <label class="form-control" for="numRecibo">Número de Recibo</label>
+                <input required type="number" name="numRecibo" id="numRecibo" class="form-control mb-3" disabled>
+            </div>
+
+            <div class="form-group" style="max-width: 300px;">
+                <label class="form-control" for="nombre">Nombre</label>
+                <input required type="text" name="nombre" id="nombre" class="form-control mb-3" disabled>
+            </div>
+
+            <div class="form-group" style="max-width: 300px;">
+                <label class="form-control" for="puesto">Puesto</label>
+                <select name="puesto" id="puesto" class="form-control mb-3" disabled>
+                    <option value="1">Auxiliar</option>
+                    <option value="2">Albañil</option>
+                    <option value="3">Ing. Obra</option>
+                </select>
+             </div>
+
+            <div class="form-group" style="max-width: 300px;">
+                <label class="form-control" for="nivel">Nivel</label>
+                <select name="nivel" id="nivel" class="form-control mb-3" disabled>
+                     <option value="1">Base</option>
+                     <option value="2">Eventual</option>
+                 </select>
+            </div>
+
+            <div class="form-group" style="max-width: 300px;">
+                <label class="form-control" for="dias">Días Trabajados</label>
+                <input required type="number" name="dias" id="dias" class="form-control mb-3" disabled>
+             </div>
+
+             <div class="form-group" style="max-width: 300px;">
+                <label class="form-control" for="fechaPago">Fecha de Pago</label>
+                <input required type="date" name="fechaPago" id="fechaPago" class="form-control mb-3" disabled>
+             </div>
+             <div class="form-group" style="max-width: 300px;">
+                <label class="form-control" for="periodoInicio">periodo de pago(fecha de inicio)</label>
+                <input required type="date" name="periodoInicio" id="periodoInicio" class="form-control mb-3" disabled>
+             </div>
+            <div class="form-group" style="max-width: 300px;">
+                <label class="form-control" for="periodoFin">periodo de pago(fecha de fin)</label>
+                <input required type="date" name="periodoFin" id="periodoFin" class="form-control mb-3" disabled>
+             </div>
+             <div class="form-group" style="max-width: 300px;">
+                <label class="form-control" for="periodicidad">Tipo de Periodicidad</label>
+                <select name="periodicidad" id="periodicidad" class="form-control mb-3" disabled>
+                    <option value="Semanal">Semanal</option>
+                    <option value="Quincenal">Quincenal</option>
+                    <option value="Mensual">Mensual</option>
+                </select>
+             </div>
+             <div class="form-group" style="max-width: 300px;">
+                <label class="form-control" for="horasDobles">Horas Dobles</label>
+                <input required type="number" step="0.5" name="horasDobles" id="horasDobles" class="form-control mb-3" disabled>
+             </div>
+             <div class="form-group" style="max-width: 300px;">
+                <label class="form-control" for="horasTriples">Horas Triples</label>
+                <input required type="number" step="0.5" name="horasTriples" id="horasTriples" class="form-control mb-3" disabled>
+             </div>
+            <div class="form-group" style="max-width: 300px;">
+                <label class="form-control" for="formaPago">Forma de Pago</label>
+                <select name="formaPago" id="formaPago" class="form-control mb-3" disabled>
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Transferencia">Transferencia</option>
+                </select>
+             </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="/recNomina" class="btn btn-secondary" id="nuevo">Nuevo</a>
+                <button type="button" class="btn btn-success" id="mostrar" onclick="document.getElementById('resultados').style.display = 'block';">Mostrar</button>
+            </form>
+
+<% if (typeof numRecibo !== 'undefined' && numRecibo !== null && !isNaN(numRecibo) && numRecibo !== '') { %>
+    <%
+        // Asignar pago diario según puesto
+        let pagoDiario = 0;
+        if (puesto == 1) pagoDiario = 100;
+        else if (puesto == 2) pagoDiario = 200;
+        else if (puesto == 3) pagoDiario = 300;
+
+        let diasTrabajados = parseInt(dias) || 0;
+        let totalBase = pagoDiario * diasTrabajados;
+
+        // Calcular valor por hora (jornada de 8 horas)
+        let valorHora = pagoDiario / 8;
+        let horasDoblesNum = parseFloat(horasDobles) || 0;
+        let horasTriplesNum = parseFloat(horasTriples) || 0;
+
+        let extraDobles = horasDoblesNum * valorHora * 2;
+        let extraTriples = horasTriplesNum * valorHora * 3;
+        let totalExtra = extraDobles + extraTriples;
+
+        let totalPago = totalBase + totalExtra;
+        let impuesto = totalPago * ((nivel == 1) ? 0.05 : 0.03);
+        let totalPagar = totalPago - impuesto;
+    %>
+
+    <section id="resultados" style="display: none;">
+        <center>
+        <hr>
+            <h3>Recibo de Nómina - <%= numRecibo %></h3>
+        <hr>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Cálculo Pago</th>
+                        <th>Cálculo Impuesto</th>
+                        <th>Total a Pagar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><%= totalPago.toFixed(2) %></td>
+                        <td><%= impuesto.toFixed(2) %></td>
+                        <td><%= totalPagar.toFixed(2) %></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Mostrar nuevos datos -->
+            <div class="card mt-3" style="max-width: 500px; margin: auto;">
+                <div class="card-header bg-secondary text-white">Detalles adicionales</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Fecha de pago:</strong> <%= fechaPago %></li>
+                    <li class="list-group-item"><strong>Periodo:</strong> <%= periodoInicio %> al <%= periodoFin %></li>
+                    <li class="list-group-item"><strong>Periodicidad:</strong> <%= periodicidad %></li>
+                    <li class="list-group-item"><strong>Horas dobles:</strong> <%= horasDoblesNum %> | <strong>Horas triples:</strong> <%= horasTriplesNum %></li>
+                    <li class="list-group-item"><strong>Forma de pago:</strong> <%= formaPago %></li>
+                </ul>
+            </div>
+        </center>
+    </section>
+<% } %>
+    </center>
+</div>
+</section>
+
+<%- include('partials/footer.ejs')%>
+
+<script>
+    document.getElementById("nuevo").addEventListener("click", function(event) {
+        event.preventDefault(); 
+
+        document.querySelectorAll("input, select").forEach(element => {
+            element.removeAttribute("disabled");
+        });
+    });
+</script>
+
+</body>
+</html>
