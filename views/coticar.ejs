@@ -17,7 +17,11 @@
         <h3>Cotización</h3>
     </center>
 
-    <section class="formulario-container" style="padding: 20px;">
+    <% const tieneDatos = marca || valor || anio || pinicial; %>
+<% const disabledAttr = tieneDatos ? '' : 'disabled'; %>
+<% const disabledBtn = tieneDatos ? '' : 'disabled'; %>
+
+<section class="formulario-container" style="padding: 20px;">
             <div id="formulario" class="container">
                 <form action="/cotizacion" method="post" onsubmit="return validar()">
                     <div class="row justify-content-center">
@@ -25,7 +29,7 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="marca" class="form-label">Marca:</label>
-                                    <select name="marca" id="marca" class="form-select" onchange="this.form.submit()" required>
+                                    <select name="marca" id="marca" class="form-select" onchange="this.form.submit()" <%- disabledAttr %>>
                                         <option value="">Seleccionar Marca</option>
                                         <% marcasModelos.forEach(m => { %>
                                             <option value="<%= m.marca %>" <%= marca === m.marca ? 'selected' : '' %>><%= m.marca %></option>
@@ -35,7 +39,7 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label for="modelo" class="form-label">Modelo:</label>
-                                    <select name="modelo" id="modelo" class="form-select" required>
+                                    <select name="modelo" id="modelo" class="form-select" <%- disabledAttr %>>
                                         <option value="">Seleccionar Modelo</option>
                                         <% if (marca) { %>
                                             <% const marcaSeleccionada = marcasModelos.find(m => m.marca === marca); %>
@@ -52,24 +56,24 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="anio" class="form-label">Año:</label>
-                                    <input type="number" name="anio" id="anio" class="form-control" value="<%-anio%>" min="1900" max="2030" step="1" required>
+                                    <input type="number" name="anio" id="anio" class="form-control" value="<%-anio%>" min="1900" max="2030" step="1" <%- disabledAttr %>>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label for="valor" class="form-label">Valor del automóvil:</label>
-                                    <input type="number" name="valor" id="valor" class="form-control" value="<%-valor%>" required>
+                                    <input type="number" name="valor" id="valor" class="form-control" value="<%-valor%>" <%- disabledAttr %>>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="pinicial" class="form-label">Porcentaje de pago inicial:</label>
-                                    <input type="number" name="pinicial" id="pinicial" class="form-control" value="<%-pinicial%>" required>
+                                    <input type="number" name="pinicial" id="pinicial" class="form-control" value="<%-pinicial%>" <%- disabledAttr %>>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label for="plazos" class="form-label">Plazo:</label>
-                                    <select name="plazos" id="plazos" class="form-select">
+                                    <select name="plazos" id="plazos" class="form-select" <%- disabledAttr %>>
                                         <option value="12" <%= plazos == 12 ? 'selected':'' %>>12 Meses</option>
                                         <option value="24" <%= plazos == 24 ? 'selected':'' %>>24 Meses</option>
                                         <option value="36" <%= plazos == 36 ? 'selected':'' %>>36 Meses</option>
@@ -82,18 +86,19 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="iva" class="form-label">IVA (%):</label>
-                                    <input type="number" name="iva" id="iva" class="form-control" value="<%-iva || 16%>" step="0.01" required>
+                                    <input type="number" name="iva" id="iva" class="form-control" value="<%-iva || 16%>" step="0.01" <%- disabledAttr %>>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label for="isan" class="form-label">ISAN (%):</label>
-                                    <input type="number" name="isan" id="isan" class="form-control" value="<%-isan || 0%>" step="0.01" required>
+                                    <input type="number" name="isan" id="isan" class="form-control" value="<%-isan || 0%>" step="0.01" <%- disabledAttr %>>
                                 </div>
                             </div>
 
                             <div class="text-center" style="margin: 20px 0px;">
-                                <button type="submit" class="btn btn-primary">Enviar</button>
+                                <button type="submit" class="btn btn-primary" <%- disabledBtn %>>Enviar</button>
                                 <a href="/cotizacion" class="btn btn-secondary">Limpiar</a>
+                                <button type="button" class="btn btn-success" id="nuevo">Nuevo</button>
                             </div>
                         </div>
                     </div>
@@ -191,5 +196,16 @@
 
 </div>
 <%- include('partials/footer.ejs') %>
+
+<script>
+    document.getElementById("nuevo").addEventListener("click", function(event) {
+        event.preventDefault(); 
+
+        document.querySelectorAll("input, select").forEach(element => {
+            element.removeAttribute("disabled");
+        });
+    });
+</script>
+
 </body>
 </html>
