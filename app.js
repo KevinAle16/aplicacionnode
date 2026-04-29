@@ -112,14 +112,14 @@ app.post('/recNomina', (req,res) => {
     res.render('nomina',params);
 });
 
-app.get('/examen1', (req, res) => {
+app.get('/inventariopa', (req, res) => {
     fs.readFile('productos.json', 'utf8', (err, data) => {
         const productos = JSON.parse(data);
         let tiposUnicos = [...new Set(productos.map(p => p.tipo))];
-        res.render('practica04', { productos: [], totalCostoCantidad: 0, totalVentaCantidad: 0, totalProductos: 0, ganancia: 0, tiposUnicos });
+        res.render('inventario', { productos: [], totalCostoCantidad: 0, totalVentaCantidad: 0, totalProductos: 0, ganancia: 0, tiposUnicos });
     });
 });
-app.post('/examen1', (req, res) => {
+app.post('/inventariopa', (req, res) => {
     const tipoSeleccionado = parseInt(req.body.tipo);
 
     fs.readFile('productos.json', 'utf8', (err, data) => {
@@ -144,7 +144,7 @@ app.post('/examen1', (req, res) => {
         let ganancia = totalVentaCantidad - totalCostoCantidad;
         let tiposUnicos = [...new Set(productos.map(p => p.tipo))];
 
-        res.render('practica04', {
+        res.render('inventario', {
             productos: productosFiltrados,
             totalCostoCantidad: totalCostoCantidad.toFixed(2),
             totalVentaCantidad: totalVentaCantidad.toFixed(2),
@@ -155,25 +155,25 @@ app.post('/examen1', (req, res) => {
     });
 });
 
-app.get('/examenC2', (req, res) => {
+app.get('/listAlum', (req, res) => {
 
     fs.readFile('alumnos.json', 'utf8', () => {
-        res.render('examenC2', { alumnos: [], nivel: "0", turno: "0", vista: "" });
+        res.render('listaAlumnos', { alumnos: [], nivel: "0", turno: "0", vista: "" });
     });
 });
 
 
-app.post('/examenC2', (req, res) => {
+app.post('/listAlum', (req, res) => {
     const { nivel, turno, vista } = req.body;
 
     fs.readFile('alumnos.json', 'utf8', (err, data) => {    
         let alumnos = JSON.parse(data);
-        res.render('examenC2', { alumnos, nivel, turno, vista });
+        res.render('listaAlumnos', { alumnos, nivel, turno, vista });
     });
 });
 
 app.post('/limpiar', (req, res) => {
-    res.redirect('/examen1');
+    res.redirect('/listAlum');
 });
 
 const puerto = 3000;
